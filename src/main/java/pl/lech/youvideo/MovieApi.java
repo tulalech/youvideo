@@ -2,13 +2,21 @@ package pl.lech.youvideo;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.After;
+import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Before;
+
 @RestController
+@Component
 @RequestMapping("/movies")
 public class MovieApi {
 
@@ -38,6 +46,7 @@ public class MovieApi {
     public ResponseEntity addMovie(@RequestBody Movie movie) {
         boolean added = movieList.add(movie);
         if (added) {
+            System.out.println("Dodałem film ".concat(movie.getTitle()));
             return new ResponseEntity(HttpStatus.CREATED);
         }
         return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
